@@ -1,0 +1,28 @@
+Les spécificateurs de format commencent par un signe de pourcentage % et sont utilisés pour affecter des valeurs aux arguments correspondants après la chaîne de contrôle. Les blancs (espaces), les tabulations et les retours à la ligne sont ignorés.
+
+Un spécificateur de format peut inclure plusieurs options avec un caractère de conversion :
+
+%[*][max_field]
+ou bien
+%[-][width].[precision]
+
+L'option * sautera le champ de saisie.
+
+L'option max_width donne le nombre maximum de caractères à affecter à un champ de saisie.
+
+Le caractère de conversion convertit l'argument, si nécessaire, dans le type indiqué :
+d decimal
+c character
+s string
+f float
+e scientific notation
+x hexadecimal
+
+
+Dans la fonction printf il faut échapper certains caractères :
+    \n nouvelle ligne
+    \t tabulation horizontale
+    \\ backslash
+    \b backspace
+    \' simple quote
+    \" double quote
