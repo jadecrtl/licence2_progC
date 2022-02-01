@@ -9,26 +9,33 @@ void affichage(int t[], int taille) {
     
 }
 
-int syracuse(int n) {
+void syracuse(int n) {
     int res = n;
     int vol = 0;
-    while(res != 1 && res >= 1) {
-        vol++;
-        printf("%d ", res);
-        if (res % 2 == 0) {
-            res = res / 2;
+    int tmp = 0;
+    for (int i = 1; i <= res; i++) {
+        tmp = i;
+        while(tmp != 1) {
+            vol++;
+            //printf("%d ", res);
+            if (tmp % 2 == 0) {
+                tmp = tmp / 2;
+            }
+            else {
+                tmp = tmp * 3 + 1;
+            }
         }
-        else {
-            res = res * 3 + 1;
-        }
+        printf("\n%d = %d\n",i, vol);
+        vol = 0;
     }
-    printf("\n Le temps de vol est : %d \n", vol);
-    return res;
+    //printf("\n Le temps de vol est %d : %d \n",n, vol);
+    //return res;
 }
 
 int main() {
     int tab[] = {42, 17};
     affichage(tab, sizeof(tab));
-    printf("Syracuse : %d \n", syracuse(N));
+    //printf("Syracuse : %d \n", syracuse(N));
+    syracuse(N);
     return 0;
 }
