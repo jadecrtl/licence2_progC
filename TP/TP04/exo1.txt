@@ -1,0 +1,13 @@
+1)
+C'est la meme chose des 2 côtés
+
+2)
+Erreur à la compilation 
+error: assignment to expression with array type
+
+3) 
+Il faut rajoute include <stdlib.h> pour avoir accès à malloc
+pt et t ne sont jamais utilisés
+
+4)
+tu sors de la mémoire que tu as alloué donc ça ne marche pas
