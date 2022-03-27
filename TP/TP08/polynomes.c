@@ -25,6 +25,10 @@ polynome* creer_monome(double c, int d) {
 		printf("On ne peut pas créer un monome avec un coef à 0\n");
 		return NULL;
 	}
+	if (d < 0) {
+		printf("On ne peut pas créer un monome avec un degré négatif\n");
+		return NULL;
+	}
 	polynome* nouveauMonome = malloc(sizeof(polynome));
 	if(nouveauMonome == NULL) {
 		perror("Le malloc pour la creation du monome n'a pas fonctionné\n");
@@ -48,23 +52,80 @@ void ajouter_monome (polynome* p , double c, int d) {
 	}
 	//On parcourt la liste en comparant le degré rencontré avec notre degré d
 	polynome* pi = p;
+	polynome* precedent = NULL;
+	if (pi->suiv == NULL) {
+		//printf("ajout dans le cas d'un polynome vide\n");
+		pi->suiv = ajout;
+		return;
+	}
+	//Si le polynome n'est pas vide alors on se place à la 1ere position où on trouve un vrai monome
+	precedent = pi;
+	pi = pi->suiv;
 	while(pi->suiv != NULL) {
+		//printf("****************coef %f\n", pi->coef);
 		if (pi->degre == d) {
 			//On va appliquer une somme algébrique de notre élément
-
+			printf("degré égal\n");
+			if (pi->coef + c == 0) {
+				//On supprime le monome à la position pi
+				precedent->suiv = pi->suiv;
+				free(pi);
+				return;
+			}
+			else {
+				pi->coef = pi->coef + c;
+				return;
+			}
 		}
 		if (pi->degre < d) {
 			//On va insérer notre monome ajout à la place de pi
+			printf("degré inférieur existant %d et ajout %d\n", pi->degre, d);
+			precedent->suiv = ajout;
+			ajout->suiv = pi;			
+			return;
 		}
+		precedent = pi;
+		pi = pi->suiv;
 	}
 	//On est à la fin de la liste et comme on est pas sorti alors on insère notre élément à l'adresse pi->suiv
-
-
-
-
-	
-	printf("monome ajouté\n");
+	if (pi->degre == d) {
+		//On va appliquer une somme algébrique de notre élément
+		printf("degré égal\n");
+		if (pi->coef + c == 0) {
+		//On supprime le monome à la position pi
+			precedent->suiv = pi->suiv;
+			free(pi);
+			return;
+		}
+		else {
+			pi->coef = pi->coef + c;
+			return;
+		}
+	}
+	printf("ajout en fin de liste\n");
+	pi->suiv = ajout;
+//	printf("monome ajouté de coef %3.1f et de degré %d\n", c, d);
 }
+
+/* affiche le polynome sous forme standard. Ex: 3X^4-5X^3+X+1 
+ * A tester sur plusieurs polynomes
+ * */
+void afficher_polynome(polynome* p) {
+	polynome* pi = p->suiv; //on saute le premier terme de coef 0 et degré -1
+	if (pi == NULL) {
+		printf("Le polynome est vide.\n");
+		return;
+	}
+	while (pi->suiv != NULL) {
+		printf("%3.1fX^%d", pi->coef, pi->degre);
+		pi = pi->suiv;
+		if(pi->coef > 0) {
+			printf("+");
+		}		
+	}
+	printf("%3.1fX^%d\n", pi->coef, pi->degre);	
+}
+
 
 /*libere tous les maillons du polynome a l'exception du maillon initial*/
 void annuler(polynome* p) {
@@ -79,19 +140,42 @@ void annuler(polynome* p) {
 
 
 void test(){	
-	printf("######## Test 1 pour créer polynome vide");
+	printf("######## Test 1 pour créer polynome vide\n");
 	polynome* p = creer_polynome_vide();
 	printf("Le coef de p est %f et le degré de p est %d \n", p->coef, p->degre);
 	printf("Voici l'adresse de p %p \n", &p);
 
-	printf("######## Test 1.1 pour tester qu'on ne peut pas créer un monome incorrect");
-	ajouter_monome(p,0,5);
+//	printf("######## Test 1.1 pour tester qu'on ne peut pas créer un monome incorrect\n");
+//	ajouter_monome(p,0,5);
 
-	printf("######## Test 2 pour créer un monome correct");
-	polynome* p2 = creer_monome(3, 2);
-	printf("Le coef de p2 est %f et le degré de p2 est %d \n", p2->coef, p2->degre);
-	printf("Voici l'adresse de p %p \n", &p2);
-	ajouter_monome(p,1,5);
+//	printf("######## Test 2 pour créer un monome correct\n");
+//	polynome* p2 = creer_monome(3, 2);
+//	printf("Le coef de p2 est %f et le degré de p2 est %d \n", p2->coef, p2->degre);
+//	printf("Voici l'adresse de p %p \n", &p2);
+
+	printf("######## Test 1.2 pour ajouter un monome correct\n");
+	ajouter_monome(p,-18,2);
+	afficher_polynome(p);
+	ajouter_monome(p,-5,1);
+	afficher_polynome(p);
+	ajouter_monome(p,26,3);
+	afficher_polynome(p);
+	ajouter_monome(p,4,5);
+	afficher_polynome(p);
+	ajouter_monome(p,7,4);
+	afficher_polynome(p);
+	ajouter_monome(p,-6,4);
+	afficher_polynome(p);
+	ajouter_monome(p,-1,4);
+	afficher_polynome(p);
+	ajouter_monome(p,5,1);
+	afficher_polynome(p);
+	ajouter_monome(p,-4,5);
+	afficher_polynome(p);
+	ajouter_monome(p,-26,3);
+	afficher_polynome(p);
+	ajouter_monome(p,18,2);
+	afficher_polynome(p);
 
 
 
