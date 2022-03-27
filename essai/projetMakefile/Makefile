@@ -1,13 +1,23 @@
+COMPILATEUR=gcc
+CFLAGS=-W -Wall -ansi -pedantic
+
+# $@ Le nom de la cible
+# $< Le nom de la première dépendance
+# $^ La liste des dépendances
+# $? La liste des dépendances plus récentes que la cible
+# $* Le nom du fichier sans suffixe
+
+
 all: hello
 
 hello: hello.o main.o
-	gcc -o hello hello.o main.o
+	$(COMPILATEUR) -o $@ $^
 
 hello.o: hello.c
-	gcc -o hello.o -c hello.c -W -Wall -ansi -pedantic
+	$(COMPILATEUR) -o $@ -c $^ $(CFLAGS)
 
 main.o: main.c hello.h
-	gcc -o main.o -c main.c -W -Wall -ansi -pedantic
+	$(COMPILATEUR) -o $@ -c $< $(CFLAGS)
 
 clean:
 	rm -rf *.o
