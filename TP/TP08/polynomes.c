@@ -12,6 +12,7 @@
 /*cree le premier maillon factice et retourne son adresse*/
 polynome* creer_polynome_vide() {
 	polynome* nouvelElement = malloc(sizeof(polynome));
+	assert(nouvelElement != NULL);
 	nouvelElement -> coef = 0;
 	nouvelElement -> degre = -1;
 	nouvelElement -> suiv = NULL;
@@ -21,10 +22,14 @@ polynome* creer_polynome_vide() {
 /*cree un maillon de coefficient c et degre d*/
 polynome* creer_monome(double c, int d) {
 	if (c == 0) {
-		printf("On ne peut pas créer un monome avec un coef à 0");
+		printf("On ne peut pas créer un monome avec un coef à 0\n");
 		return NULL;
 	}
 	polynome* nouveauMonome = malloc(sizeof(polynome));
+	if(nouveauMonome == NULL) {
+		perror("Le malloc pour la creation du monome n'a pas fonctionné\n");
+		exit(1);
+	}
 	nouveauMonome -> coef = c;
 	nouveauMonome -> degre = d;
 	nouveauMonome -> suiv = NULL;
@@ -37,20 +42,31 @@ polynome* creer_monome(double c, int d) {
  * Attention notamment au cas ou un monome de meme degré existe deja dans p
  */ 
 void ajouter_monome (polynome* p , double c, int d) {
-	if (c == 0) {
-		printf("Il ne peut pas y avoir un monome avec un coef à 0");
-	}
 	polynome* ajout = creer_monome(c,d);
-	polynome* tmp = p;
-	for (tmp; d < tmp -> degre; tmp = tmp -> suiv) {
-		if (d == tmp -> degre) {
-			tmp -> coef = c + tmp -> coef;
+	if (ajout == NULL) {
+		return;
+	}
+	//On parcourt la liste en comparant le degré rencontré avec notre degré d
+	polynome* pi = p;
+	while(pi->suiv != NULL) {
+		if (pi->degre == d) {
+			//On va appliquer une somme algébrique de notre élément
+
+		}
+		if (pi->degre < d) {
+			//On va insérer notre monome ajout à la place de pi
 		}
 	}
+	//On est à la fin de la liste et comme on est pas sorti alors on insère notre élément à l'adresse pi->suiv
+
+
+
 
 	
+	printf("monome ajouté\n");
 }
 
+/*libere tous les maillons du polynome a l'exception du maillon initial*/
 void annuler(polynome* p) {
 	polynome *aux1 = p -> suiv, *aux2;
 	while(aux1 != NULL) {
@@ -63,13 +79,23 @@ void annuler(polynome* p) {
 
 
 void test(){	
+	printf("######## Test 1 pour créer polynome vide");
 	polynome* p = creer_polynome_vide();
 	printf("Le coef de p est %f et le degré de p est %d \n", p->coef, p->degre);
 	printf("Voici l'adresse de p %p \n", &p);
 
+	printf("######## Test 1.1 pour tester qu'on ne peut pas créer un monome incorrect");
+	ajouter_monome(p,0,5);
+
+	printf("######## Test 2 pour créer un monome correct");
 	polynome* p2 = creer_monome(3, 2);
 	printf("Le coef de p2 est %f et le degré de p2 est %d \n", p2->coef, p2->degre);
 	printf("Voici l'adresse de p %p \n", &p2);
+	ajouter_monome(p,1,5);
+
+
+
+
 
 	/*
 	ajouter_monome (p,1,2);
