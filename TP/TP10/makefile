@@ -1,6 +1,7 @@
 #url du lien web pour faire des makefile : https://gl.developpez.com/tutoriel/outil/makefile/
 COMPILATEUR=gcc
-CFLAGS=-W -Wall -ansi -pedantic
+CFLAGS=-Wall 
+EXEC=copy copy2
 
 # $@ Le nom de la cible
 # $< Le nom de la première dépendance
@@ -13,21 +14,21 @@ CFLAGS=-W -Wall -ansi -pedantic
 #%.o: %.c
 #	commandes
 
-all: hello
+#cible: dependance
+#	commandes
 
-hello: hello.o main.o
+all : $(EXEC)
+
+copy: copy.o
 	$(COMPILATEUR) -o $@ $^
 
-hello.o: hello.c
-	$(COMPILATEUR) -o $@ -c $^ $(CFLAGS)
-
-main.o: hello.h
+copy2: copy2.o
+	$(COMPILATEUR) -o $@ $^
 
 %.o: %.c
-	$(COMPILATEUR) -o $@ -c $< $(CFLAGS)
+	$(COMPILATEUR) $(CFLAGS) -o $@ -c $< 
 
-clean:
-	rm -rf *.o
-	rm -rf hello	
-
-integral: clean all
+clean :
+	rm -f *.o
+	rm -f copy
+	rm -f copy2	

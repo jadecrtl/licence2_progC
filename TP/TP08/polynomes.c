@@ -40,6 +40,16 @@ polynome* creer_monome(double c, int d) {
 	return nouveauMonome;
 }
 
+/*retourne la valeur du polynome p evalué en x*/
+double evaluer_polynome(polynome* p,double x) {
+	double res = 0;
+	polynome* aux = NULL;
+	for (aux = p->suiv; aux != NULL; aux = aux->suiv) {
+		res += pow(x, aux->degre) * aux->coef;
+	}
+	return res;
+}
+
 /*
  * ajoute un monome cX^d au polynome p.
  * Il faut preserver les conventions sur le polynome p
@@ -138,6 +148,47 @@ void annuler(polynome* p) {
 	p -> suiv = NULL;
 }
 
+/* retourne une copie du polynome p */
+polynome* copie(polynome* p) {
+	polynome* res = creer_polynome_vide();
+	if (p == NULL) {
+		return res;
+	}
+	for (polynome* aux = p->suiv; aux != NULL; aux = aux->suiv) {
+		ajouter_monome(res, aux->coef, aux->degre);
+	}
+	return res;
+}
+
+/*retourne un nouveau polynome correspondant à la somme de p1 et p2*/
+polynome* somme(polynome* p1, polynome* p2) {
+	polynome* copieP1 = copie(p1);
+	for (polynome* aux = p2->suiv; aux != NULL; aux = aux->suiv) {
+		ajouter_monome(copieP1, aux->coef, aux->degre);
+	}
+	return copieP1;
+}
+
+/*retourne un nouveau polynome correspondant à la difference de p1 et p2*/
+polynome* soustraction(polynome* p1, polynome* p2){
+	
+}
+
+/*retourne un nouveau polynome correspondant au produit de p1 et p2*/
+polynome* produit(polynome* p1 ,polynome* p2) {
+
+}
+
+/*retourne un nouveau polynome correspondant a p^n */
+polynome* puissance(polynome* p, int n) {
+
+}
+
+/*retourne un nouveau polynome correspondant au polynome dérivé p'*/
+polynome* derive(polynome* p) {
+
+}
+
 
 void test(){	
 	printf("######## Test 1 pour créer polynome vide\n");
@@ -153,7 +204,7 @@ void test(){
 //	printf("Le coef de p2 est %f et le degré de p2 est %d \n", p2->coef, p2->degre);
 //	printf("Voici l'adresse de p %p \n", &p2);
 
-	printf("######## Test 1.2 pour ajouter un monome correct\n");
+	printf("\n\n######## Test 1.2 pour ajouter un monome correct\n");
 	ajouter_monome(p,-18,2);
 	afficher_polynome(p);
 	ajouter_monome(p,-5,1);
@@ -177,9 +228,14 @@ void test(){
 	ajouter_monome(p,18,2);
 	afficher_polynome(p);
 
-
-
-
+	printf("\n\n######## Test 1.2 pour évaluer un polynôme\n");
+	polynome* p2 = creer_polynome_vide();
+	ajouter_monome(p2,3,5);
+	ajouter_monome(p2,2,2);
+	ajouter_monome(p2,1.5,1);
+	afficher_polynome(p2);
+	double resultat = evaluer_polynome(p2,1);
+	printf("\nLe resultat de l'evaluation pour le polynome p2 est : %f\n", resultat);
 
 	/*
 	ajouter_monome (p,1,2);
